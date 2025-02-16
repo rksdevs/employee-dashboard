@@ -23,6 +23,10 @@ const EmployeeSchema = new mongoose.Schema(
       state: { type: String, required: true },
       zip: { type: String, required: true },
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
