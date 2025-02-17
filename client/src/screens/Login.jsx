@@ -13,16 +13,21 @@ import { Button } from "../components/ui/button";
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../mutations/loginMutation";
+import { useToast } from "../hooks/use-toast";
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const { toast } = useToast();
   const [loginUser, { loading, error, data }] = useMutation(LOGIN_USER, {
     onCompleted: (data) => {
       if (data.loginUser) {
         navigate("/dashboard");
+        toast({
+          title: "Login Success!",
+        });
       }
     },
   });
@@ -40,6 +45,11 @@ const Login = () => {
       await loginUser({ variables: { email, password } });
     } catch (err) {
       console.error("Login failed:", err.message);
+      toast({
+        title: "Login failed!",
+        description: err.message,
+        variant: "destructive",
+      });
     }
   };
 

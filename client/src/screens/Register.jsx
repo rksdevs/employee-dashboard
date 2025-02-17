@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import { Input } from "../components/ui/input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { useEffect, useState } from "react";
@@ -18,14 +18,46 @@ import {
   SelectValue,
   SelectItem,
 } from "../components/ui/select";
+import { useMutation } from "@apollo/client";
+import { REGISTER_USER } from "../mutations/registerMutation";
+import { useToast } from "../hooks/use-toast";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [registerUser, { loading, error, data }] = useMutation(REGISTER_USER, {
+    onCompleted: (data) => {
+      console.log(data);
+      if (data?.registerUser?.name) {
+        navigate("/");
+        toast({
+          title: `Registration Successful ${data?.registerUser?.name}. Please login.`,
+        });
+      }
+    },
+  });
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [adminValueToPass, setAdminValueToPass] = useState(false);
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      await registerUser({
+        variables: { name, email, password, isAdmin: adminValueToPass },
+      });
+    } catch (error) {
+      console.error("Login failed:", error.message);
+      toast({
+        title: "Login failed!",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
 
   useEffect(() => {
     if (isAdmin === "Yes, I'm an admin") {
@@ -48,7 +80,7 @@ const Register = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="grid gap-4" onSubmit={(e) => console.log(e)}>
+          <form className="grid gap-4" onSubmit={(e) => handleRegister(e)}>
             <div className="grid gap-2">
               <Label htmlFor="name">Name</Label>
               <Input
