@@ -12,10 +12,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import Attendance from "./attendance";
+import { useQuery } from "@apollo/client";
+import { GET_ME } from "../queries/employeeQueries";
 
 const ProfileDetails = ({ data }) => {
   const [attendance, setAttendance] = useState([]);
-
+  const {
+    data: userRole,
+    loading: loadingUserRole,
+    error: loadingError,
+  } = useQuery(GET_ME, { fetchPolicy: "network-only" });
   useEffect(() => {
     if (data) {
       setAttendance(data?.attendance);
@@ -88,8 +94,12 @@ const ProfileDetails = ({ data }) => {
               <CardFooter className="grid grid-cols-3 items-center border-t bg-muted/50 px-6 py-3 justify-between">
                 <h3 className="text-primary col-span-1">Admin Actions</h3>
                 <div className="col-span-2 gap-4 flex justify-evenly">
-                  <Button disabled={!data?.isAdmin}>Edit User</Button>
-                  <Button disabled={!data?.isAdmin}>Delete User</Button>
+                  <Button disabled={!userRole?.getUserRole?.isAdmin}>
+                    Edit User
+                  </Button>
+                  <Button disabled={!userRole?.getUserRole?.isAdmin}>
+                    Delete User
+                  </Button>
                 </div>
               </CardFooter>
             </Card>

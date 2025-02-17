@@ -1,14 +1,24 @@
 import { Outlet } from "react-router-dom";
 import "./App.css";
 import Dashboard from "./screens/Dashboard";
-import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import {
+  ApolloProvider,
+  ApolloClient,
+  InMemoryCache,
+  createHttpLink,
+} from "@apollo/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import { Toaster } from "./components/ui/toaster";
 
+const httpLink = createHttpLink({
+  uri: "http://localhost:8000/graphql",
+  credentials: "include", // Ensure cookies are sent
+});
+
 const client = new ApolloClient({
-  uri: `http://localhost:8000/graphql`,
+  link: httpLink,
   cache: new InMemoryCache(),
 });
 

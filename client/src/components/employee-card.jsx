@@ -11,7 +11,7 @@ import {
 } from "./ui/dropdown-menu";
 import { EmployeeDrawer } from "./employee-drawer";
 
-const EmployeeCard = ({ data }) => {
+const EmployeeCard = ({ data, userIsAdmin }) => {
   return (
     <Card className="h-fit transition-all hover:scale-105">
       <CardHeader className="items-center relative">
@@ -23,8 +23,8 @@ const EmployeeCard = ({ data }) => {
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View</DropdownMenuItem>
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            {userIsAdmin && <DropdownMenuItem>Edit</DropdownMenuItem>}
+            {userIsAdmin && <DropdownMenuItem>Update</DropdownMenuItem>}
           </DropdownMenuContent>
         </DropdownMenu>
         <EmployeeDrawer data={data} />

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs"; // Ensure correct path
+import bcrypt from "bcryptjs";
 import {
   GraphQLBoolean,
   GraphQLNonNull,
@@ -44,7 +44,7 @@ const loginUser = {
 
       // Generate JWT Token
       const token = jwt.sign(
-        { id: user._id, email: user.email, isAdmin: user.isAdmin },
+        { id: user._id, isAdmin: user.isAdmin },
         process.env.JWT_SECRET,
         { expiresIn: "7d" }
       );

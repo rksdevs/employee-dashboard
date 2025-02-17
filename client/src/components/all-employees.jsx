@@ -1,13 +1,14 @@
 import { useQuery } from "@apollo/client";
 import EmployeeCard from "./employee-card";
-import { useEffect } from "react";
-import { GET_EMPLOYEES } from "../queries/employeeQueries";
+import { GET_EMPLOYEES, GET_ME } from "../queries/employeeQueries";
 
 const AllEmployees = () => {
   const { loading, error, data } = useQuery(GET_EMPLOYEES);
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  const {
+    data: userRole,
+    loading: loadingUserRole,
+    error: loadingError,
+  } = useQuery(GET_ME, { fetchPolicy: "network-only" });
 
   if (loading) return <h1>Loading...</h1>;
   if (error) return <h1>Something went wrong - {error}</h1>;
@@ -16,7 +17,11 @@ const AllEmployees = () => {
       {!loading &&
         !error &&
         data?.allEmployees?.map?.((item) => (
-          <EmployeeCard data={item} key={item?.id} />
+          <EmployeeCard
+            data={item}
+            key={item?.id}
+            userIsAdmin={userRole?.getUserRole?.isAdmin}
+          />
         ))}
     </>
   );

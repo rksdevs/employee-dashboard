@@ -36,9 +36,9 @@ export function EmployeeDrawer({ data }) {
     skip: !open,
   });
 
-  useEffect(() => {
-    console.log("employee details-- ", employeeDetails);
-  }, [employeeDetails]);
+  // useEffect(() => {
+  //   console.log("employee details-- ", employeeDetails);
+  // }, [employeeDetails]);
 
   if (isDesktop) {
     return (

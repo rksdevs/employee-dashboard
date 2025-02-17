@@ -16,6 +16,7 @@ import User from "../models/userModel.js";
 import { loginUser } from "../mutations/loginUser.js";
 import { registerUser } from "../mutations/registerUser.js";
 import { logoutUser } from "../mutations/logoutUser.js";
+import { getUserRole } from "../queries/userRoleQuery.js";
 
 const AttendanceStatusEnum = new GraphQLEnumType({
   name: "EmployeeAttendance",
@@ -139,6 +140,7 @@ const RootQuery = new GraphQLObjectType({
         return Employee.findById(args.id);
       },
     },
+    getUserRole,
   },
 });
 
@@ -183,7 +185,10 @@ const mutation = new GraphQLObjectType({
       args: {
         id: { type: GraphQLNonNull(GraphQLID) },
       },
-      resolve(parent, args) {
+      resolve(parent, args, { res }) {
+        if (res.user || res.user.isAdmin) {
+          throw new Error("Not authorized to delete employees");
+        }
         return Employee.findByIdAndDelete(args.id);
       },
     },
@@ -202,8 +207,11 @@ const mutation = new GraphQLObjectType({
         address: { type: AddressUpdateType },
         isAdmin: { type: GraphQLBoolean },
       },
-      async resolve(parent, args) {
+      async resolve(parent, args, { res }) {
         try {
+          if (res.user || res.user.isAdmin) {
+            throw new Error("Not authorized to update employees");
+          }
           return await Employee.findByIdAndUpdate(
             args.id,
             {

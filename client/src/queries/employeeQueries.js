@@ -32,3 +32,20 @@ export const GET_EMPLOYEE_DETAILS = gql`
     }
   }
 `;
+
+export const GET_USER_ROLE = gql`
+  query GetUserRole {
+    isAdmin
+  }
+`;
+
+export const GET_ME = gql`
+  query GetMe {
+    getUserRole {
+      id
+      name
+      email
+      isAdmin
+    }
+  }
+`;

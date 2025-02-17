@@ -16,9 +16,12 @@ import {
   SidebarTrigger,
 } from "../components/ui/sidebar";
 import { useEffect } from "react";
+import { gql, useApolloClient } from "@apollo/client";
+import { GET_USER_ROLE } from "../queries/employeeQueries";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const client = useApolloClient();
 
   useEffect(() => {
     fetch("/api/me", { credentials: "include" }) // Check authentication
@@ -26,10 +29,15 @@ export default function Dashboard() {
       .then((data) => {
         if (!data.isAuthenticated) {
           navigate("/");
+        } else {
+          client.writeQuery({
+            query: GET_USER_ROLE,
+            data: { isAdmin: data.user.isAdmin },
+          });
         }
       })
       .catch(() => navigate("/"));
-  }, [navigate]);
+  }, [navigate, client]);
   return (
     <SidebarProvider>
       <AppSidebar />

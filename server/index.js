@@ -9,6 +9,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import User from "./models/userModel.js";
 import jwt from "jsonwebtoken";
+import authMiddleware from "./middlewares/authMiddleware.js";
 
 const port = process.env.PORT || 5000;
 const app = express();
@@ -19,10 +20,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
+app.use(authMiddleware);
 
 app.get("/api/me", async (req, res) => {
   try {
@@ -51,10 +53,11 @@ app.get("/api/me", async (req, res) => {
 
 app.use(
   "/graphql",
-  graphqlHTTP({
+  graphqlHTTP((req, res) => ({
     schema,
     graphiql: process.env.NODE_ENV === "development",
-  })
+    context: { req, res }, // Pass `req` with `user` to GraphQL resolvers
+  }))
 );
 
 app.listen(port, console.log(`Server is running on port ${port}`));
