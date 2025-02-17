@@ -36,10 +36,10 @@ const AttendanceType = new GraphQLObjectType({
 const AddressType = new GraphQLObjectType({
   name: "Address",
   fields: () => ({
-    street: { type: GraphQLNonNull(GraphQLString) },
-    city: { type: GraphQLNonNull(GraphQLString) },
-    state: { type: GraphQLNonNull(GraphQLString) },
-    zip: { type: GraphQLNonNull(GraphQLString) },
+    street: { type: GraphQLString },
+    city: { type: GraphQLString },
+    state: { type: GraphQLString },
+    zip: { type: GraphQLString },
   }),
 });
 
