@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import AllEmployees from "../components/all-employees";
 import { AppSidebar } from "../components/app-sidebar";
 import {
@@ -14,8 +15,21 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "../components/ui/sidebar";
+import { useEffect } from "react";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("/api/me", { credentials: "include" }) // Check authentication
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.isAuthenticated) {
+          navigate("/");
+        }
+      })
+      .catch(() => navigate("/"));
+  }, [navigate]);
   return (
     <SidebarProvider>
       <AppSidebar />

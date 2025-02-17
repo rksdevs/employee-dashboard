@@ -95,7 +95,7 @@ const ProfileDetails = ({ data }) => {
             </Card>
           </TabsContent>
           <TabsContent value="attendance">
-            <Attendance data={data?.attendance} />
+            <Attendance data={attendance} />
           </TabsContent>
         </Tabs>
       </CardContent>

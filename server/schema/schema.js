@@ -12,6 +12,10 @@ import {
   GraphQLEnumType,
 } from "graphql";
 import Employee from "../models/EmployeeModel.js";
+import User from "../models/userModel.js";
+import { loginUser } from "../mutations/loginUser.js";
+import { registerUser } from "../mutations/registerUser.js";
+import { logoutUser } from "../mutations/logoutUser.js";
 
 const AttendanceStatusEnum = new GraphQLEnumType({
   name: "EmployeeAttendance",
@@ -97,6 +101,22 @@ const EmployeeType = new GraphQLObjectType({
     subjects: { type: new GraphQLList(GraphQLString) },
     attendance: { type: new GraphQLList(AttendanceType) },
     address: { type: AddressType },
+    email: { type: GraphQLString },
+    isAdmin: { type: GraphQLBoolean },
+  }),
+});
+
+// User Type
+const UserType = new GraphQLObjectType({
+  name: "UserAdd",
+  fields: () => ({
+    id: {
+      type: GraphQLID,
+      resolve(parent) {
+        return parent._id.toString();
+      },
+    },
+    name: { type: GraphQLString },
     email: { type: GraphQLString },
     isAdmin: { type: GraphQLBoolean },
   }),
@@ -205,6 +225,9 @@ const mutation = new GraphQLObjectType({
         }
       },
     },
+    registerUser,
+    loginUser,
+    logoutUser,
   },
 });
 

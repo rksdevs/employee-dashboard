@@ -23,9 +23,25 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "../components/ui/sidebar";
+import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import { LOGOUT_USER } from "../mutations/logoutMutation";
 
 export function NavUser({ user }) {
   const { isMobile } = useSidebar();
+  const navigate = useNavigate();
+  const [logoutUser] = useMutation(LOGOUT_USER);
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await logoutUser();
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -44,7 +60,10 @@ export function NavUser({ user }) {
                 <span className="truncate font-semibold">{user.name}</span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
-              <LogOut className="ml-auto size-4" />
+              <LogOut
+                className="ml-auto size-4"
+                onClick={(e) => handleLogout(e)}
+              />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
         </DropdownMenu>

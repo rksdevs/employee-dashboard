@@ -1,6 +1,10 @@
+import { Outlet } from "react-router-dom";
 import "./App.css";
 import Dashboard from "./screens/Dashboard";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./screens/Login";
+import Register from "./screens/Register";
 
 const client = new ApolloClient({
   uri: `http://localhost:8000/graphql`,
@@ -9,11 +13,15 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <ApolloProvider client={client}>
-      <div className="App overflow-hidden">
-        <Dashboard />
-      </div>
-    </ApolloProvider>
+    <Router>
+      <ApolloProvider client={client}>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </ApolloProvider>
+    </Router>
   );
 }
 
