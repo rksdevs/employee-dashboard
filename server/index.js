@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import User from "./models/userModel.js";
 import jwt from "jsonwebtoken";
 import authMiddleware from "./middlewares/authMiddleware.js";
+import path from "path";
 
 const port = process.env.PORT || 5000;
 const app = express();
@@ -25,6 +26,7 @@ app.use(
   })
 );
 app.use(authMiddleware);
+const __dirname = path.resolve();
 
 app.get("/api/me", async (req, res) => {
   try {
@@ -59,5 +61,19 @@ app.use(
     context: { req, res }, // Pass `req` with `user` to GraphQL resolvers
   }))
 );
+
+if (process.env.NODE_ENV === "production") {
+  //set static folder
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+  //any routes which is not listed in the api will be redirect to index page
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running...");
+  });
+}
 
 app.listen(port, console.log(`Server is running on port ${port}`));
