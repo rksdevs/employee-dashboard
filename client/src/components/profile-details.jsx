@@ -91,17 +91,6 @@ const ProfileDetails = ({ data }) => {
                   </dl>
                 </div>
               </CardContent>
-              <CardFooter className="grid grid-cols-3 items-center border-t bg-muted/50 px-6 py-3 justify-between">
-                <h3 className="text-primary col-span-1">Admin Actions</h3>
-                <div className="col-span-2 gap-4 flex justify-evenly">
-                  <Button disabled={!userRole?.getUserRole?.isAdmin}>
-                    Edit User
-                  </Button>
-                  <Button disabled={!userRole?.getUserRole?.isAdmin}>
-                    Delete User
-                  </Button>
-                </div>
-              </CardFooter>
             </Card>
           </TabsContent>
           <TabsContent value="attendance">

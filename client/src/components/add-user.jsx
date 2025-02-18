@@ -69,7 +69,12 @@ export function UserSheet({ data }) {
           });
         }
       },
-      refetchQueries: [{ query: GET_EMPLOYEES }],
+      refetchQueries: [
+        {
+          query: GET_EMPLOYEES,
+          variables: { limit: 10, offset: 0, sortBy: "a-z" },
+        },
+      ],
     });
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

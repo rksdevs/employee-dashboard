@@ -17,7 +17,7 @@ import {
 } from "../components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_ME } from "../queries/employeeQueries";
+import { GET_EMPLOYEES, GET_ME } from "../queries/employeeQueries";
 import {
   Sheet,
   SheetClose,
@@ -73,6 +73,12 @@ export function NavMain() {
         });
       }
     },
+    refetchQueries: [
+      {
+        query: GET_EMPLOYEES,
+        variables: { limit: 10, offset: 0, sortBy: "a-z" },
+      },
+    ],
   });
   const {
     data: userRole,

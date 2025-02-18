@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import EmployeeCard from "./employee-card";
 import { GET_EMPLOYEES, GET_ME } from "../queries/employeeQueries";
 
-const AllEmployees = () => {
+const AllEmployees = ({ employeeData }) => {
   const { loading, error, data } = useQuery(GET_EMPLOYEES);
   const {
     data: userRole,
@@ -16,7 +16,7 @@ const AllEmployees = () => {
     <>
       {!loading &&
         !error &&
-        data?.allEmployees?.map?.((item) => (
+        employeeData?.map?.((item) => (
           <EmployeeCard
             data={item}
             key={item?.id}

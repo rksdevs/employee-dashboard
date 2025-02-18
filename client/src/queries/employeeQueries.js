@@ -1,10 +1,14 @@
 import { gql } from "@apollo/client";
+
 export const GET_EMPLOYEES = gql`
-  query getAllEmployees {
-    allEmployees {
-      id
-      name
-      class
+  query getAllEmployees($limit: Int, $offset: Int, $sortBy: String) {
+    allEmployees(limit: $limit, offset: $offset, sortBy: $sortBy) {
+      employees {
+        id
+        name
+        class
+      }
+      totalCount
     }
   }
 `;
