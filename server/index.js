@@ -63,10 +63,10 @@ app.use(
 );
 
 if (process.env.NODE_ENV === "production") {
-  //set static folder
+  // Serve static files from the React app build
   app.use(express.static(path.join(__dirname, "/frontend/build")));
 
-  //any routes which is not listed in the api will be redirect to index page
+  // For any route not handled by our API, serve the React app
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
   });
@@ -76,4 +76,4 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(port, console.log(`Server is running on port ${port}`));
+app.listen(port, () => console.log(`Server is running on port ${port}`));
