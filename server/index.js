@@ -21,9 +21,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin:
-      "https://employee-dashboard-zl0x.onrender.com/" ||
-      "http://localhost:3000",
+    origin: "https://employee-dashboard-zl0x.onrender.com",
     credentials: true,
   })
 );
