@@ -86,7 +86,7 @@ const Register = () => {
               <Input
                 id="name"
                 type="name"
-                placeholder="m@example.com"
+                placeholder="Your name here"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
