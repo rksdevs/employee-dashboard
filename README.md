@@ -1,3 +1,10 @@
+**Technologies Used**
+1. React
+2. Shadcn UI
+3. NodeJs/ExpressJs
+4. MongoDb
+5. Graphql
+
 **To Start it on local:**
 1. Install Node
 2. Clone the repo
