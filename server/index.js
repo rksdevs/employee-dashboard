@@ -19,23 +19,9 @@ connectToDb();
 
 app.use(express.json());
 app.use(cookieParser());
-
-const allowedOrigins = [
-  "https://employee-dashboard-zl0x.onrender.com", // your production client
-  "http://localhost:3000", // your local development client
-];
-
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like curl requests)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1) {
-        return callback(null, true);
-      } else {
-        return callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
     credentials: true,
   })
 );
