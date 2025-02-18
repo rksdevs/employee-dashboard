@@ -19,9 +19,23 @@ connectToDb();
 
 app.use(express.json());
 app.use(cookieParser());
+
+const allowedOrigins = [
+  process.env.CLIENT_URL || "https://employee-dashboard-zl0x.onrender.com",
+  "http://localhost:3000",
+];
+
 app.use(
   cors({
-    origin: "https://employee-dashboard-zl0x.onrender.com",
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
